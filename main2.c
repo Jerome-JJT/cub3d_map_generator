@@ -1,6 +1,6 @@
 #include <cub3d.h>
 
-int	count_map(t_vars *vars)
+int	ft_gen_count(t_vars *vars)
 {
 	int	nb;
 	int	i;
@@ -8,10 +8,10 @@ int	count_map(t_vars *vars)
 
 	nb = 0;
 	i = 0;
-	while (i < HEIGHT)
+	while (i < GEN_HEIGHT)
 	{
 		j = 0;
-		while (j < WIDTH)
+		while (j < GEN_WIDTH)
 		{
 			if (vars->map.raw[i][j] == '0')
 				nb++;
@@ -22,50 +22,51 @@ int	count_map(t_vars *vars)
 	return (nb);
 }
 
-void	genmap(t_vars *vars, int x, int y, int dir)
+void	ft_gen_expend(t_vars *vars, int x, int y, int dir)
 {
-	if (x <= 0 || x >= WIDTH - 2 || y <= 0 || y >= HEIGHT - 1
+	if (x <= 0 || x >= GEN_WIDTH - 2 || y <= 0 || y >= GEN_HEIGHT - 1
 		|| vars->map.raw[y][x] != '1')
 		return ;
-	if (count_map(vars) > (WIDTH * HEIGHT) * TRESH * 3 && rand() % 3 == 0)
+	if (ft_gen_count(vars) > (GEN_WIDTH * GEN_HEIGHT) * GEN_TRESH * 3
+		&& rand() % 3 == 0)
 		return ;
 	vars->map.raw[y][x] = '0';
-	if (rand() % 100 < CONTI && dir == 1)
-		genmap(vars, x, y - 1, 1);
-	if (rand() % 100 < CONTI && dir == 2)
-		genmap(vars, x - 1, y, 2);
-	if (rand() % 100 < CONTI && dir == 3)
-		genmap(vars, x + 1, y, 3);
-	if (rand() % 100 < CONTI && dir == 4)
-		genmap(vars, x, y + 1, 4);
-	if (rand() % 100 < PROPAG)
-		genmap(vars, x, y - 1, 1);
-	if (rand() % 100 < PROPAG)
-		genmap(vars, x - 1, y, 2);
-	if (rand() % 100 < PROPAG)
-		genmap(vars, x + 1, y, 3);
-	if (rand() % 100 < PROPAG)
-		genmap(vars, x, y + 1, 4);
+	if (rand() % 100 < GEN_CONTINUE && dir == 1)
+		ft_gen_expend(vars, x, y - 1, 1);
+	if (rand() % 100 < GEN_CONTINUE && dir == 2)
+		ft_gen_expend(vars, x - 1, y, 2);
+	if (rand() % 100 < GEN_CONTINUE && dir == 3)
+		ft_gen_expend(vars, x + 1, y, 3);
+	if (rand() % 100 < GEN_CONTINUE && dir == 4)
+		ft_gen_expend(vars, x, y + 1, 4);
+	if (rand() % 100 < GEN_PROPAG)
+		ft_gen_expend(vars, x, y - 1, 1);
+	if (rand() % 100 < GEN_PROPAG)
+		ft_gen_expend(vars, x - 1, y, 2);
+	if (rand() % 100 < GEN_PROPAG)
+		ft_gen_expend(vars, x + 1, y, 3);
+	if (rand() % 100 < GEN_PROPAG)
+		ft_gen_expend(vars, x, y + 1, 4);
 }
 
-int	check_map2(t_vars *vars)
+int	ft_gen_check2(t_vars *vars)
 {
 	int	i;
 	int	j;
 	int	nb;
 
 	nb = 0;
-	i = WIDTH * VERIF;
-	j = HEIGHT * VERIF;
-	while (i < WIDTH * (1 - VERIF))
+	i = GEN_WIDTH * GEN_BORDERS;
+	j = GEN_HEIGHT * GEN_BORDERS;
+	while (i < GEN_WIDTH * (1 - GEN_BORDERS))
 	{
 		if (vars->map.raw[j][i] == '0' && nb <= 0)
 			nb++;
 		i++;
 	}
-	i = WIDTH * VERIF;
-	j = HEIGHT * (1 - VERIF);
-	while (i < WIDTH * (1 - VERIF))
+	i = GEN_WIDTH * GEN_BORDERS;
+	j = GEN_HEIGHT * (1 - GEN_BORDERS);
+	while (i < GEN_WIDTH * (1 - GEN_BORDERS))
 	{
 		if (vars->map.raw[j][i] == '0' && nb <= 1)
 			nb++;
@@ -74,28 +75,28 @@ int	check_map2(t_vars *vars)
 	return (nb);
 }
 
-int	check_map(t_vars *vars)
+int	ft_gen_check(t_vars *vars)
 {
 	int	i;
 	int	j;
 	int	nb;
 
 	nb = 0;
-	i = HEIGHT * VERIF;
-	j = WIDTH * VERIF;
-	while (i < HEIGHT * (1 - VERIF))
+	i = GEN_HEIGHT * GEN_BORDERS;
+	j = GEN_WIDTH * GEN_BORDERS;
+	while (i < GEN_HEIGHT * (1 - GEN_BORDERS))
 	{
 		if (vars->map.raw[i][j] == '0' && nb <= 0)
 			nb++;
 		i++;
 	}
-	i = HEIGHT * VERIF;
-	j = WIDTH * (1 - VERIF);
-	while (i < HEIGHT * (1 - VERIF))
+	i = GEN_HEIGHT * GEN_BORDERS;
+	j = GEN_WIDTH * (1 - GEN_BORDERS);
+	while (i < GEN_HEIGHT * (1 - GEN_BORDERS))
 	{
 		if (vars->map.raw[i][j] == '0' && nb <= 1)
 			nb++;
 		i++;
 	}
-	return (nb + check_map2(vars) >= 3);
+	return (nb + ft_gen_check2(vars) >= 3);
 }

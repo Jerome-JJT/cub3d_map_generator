@@ -12,13 +12,13 @@
 
 # include <structs.h>
 
-#define WIDTH 80
-#define HEIGHT 60
+# define GEN_WIDTH 80
+# define GEN_HEIGHT 60
 
-#define PROPAG 25
-#define CONTI 70
-#define TRESH 0.08
-#define VERIF 0.2
+# define GEN_PROPAG 25
+# define GEN_CONTINUE 70
+# define GEN_TRESH 0.08
+# define GEN_BORDERS 0.2
 
 //-----------------
 //math.c

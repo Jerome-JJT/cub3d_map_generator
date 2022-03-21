@@ -1,3 +1,12 @@
+objs
+objs/*
+debugs
+debugs/*
+old
+*.DS_Store
+*.bak
+*.old
+
 # Prerequisites
 *.d
 
@@ -29,6 +38,7 @@
 *.dylib
 
 # Executables
+genmap
 *.exe
 *.out
 *.app
